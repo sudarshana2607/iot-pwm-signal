@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Interactive engineering learning module: PWM Signalling in Arduino" name="description"/>
+<title>PWM Signalling in Arduino | Interactive ECE Lab</title>
+<style>
+:root{--bg:#f4f7fb;--panel:#fff;--ink:#17243a;--muted:#5c6b80;--line:#dce4ef;--blue:#2457d6;--cyan:#13a8b5;--navy:#10213d;--gold:#ffbd45;--good:#16845b;--bad:#c13c4a;--shadow:0 12px 32px #15284a12}
+*{box-sizing:border-box;scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.62 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}a{color:var(--blue)}button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 15px;background:var(--blue);color:white;font-weight:700}button.secondary{background:#eaf0ff;color:#1d46b1}button.dark{background:var(--navy)}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.hero{background:radial-gradient(circle at 90% 10%,#2b6bdc 0,transparent 30%),linear-gradient(125deg,#0c1930,#172f58 60%,#0a788b);color:#fff;padding:42px max(20px,calc((100% - 1180px)/2)) 34px}.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:.76rem;font-weight:800;color:#a9eaf0}.hero h1{font-size:clamp(2.1rem,5vw,4rem);line-height:1.04;max-width:850px;margin:12px 0}.hero p{max-width:760px;color:#e0eaff;font-size:1.08rem}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.chip{border:1px solid #ffffff50;border-radius:999px;padding:5px 11px;font-size:.85rem;background:#ffffff10}.hero-actions{display:flex;gap:10px;flex-wrap:wrap}.hero-actions button{background:#fff;color:#15315a}.hero-actions .outline{background:transparent;color:#fff;border:1px solid #ffffff80}
+.layout{max-width:none;margin:0;padding:0;display:block}.sidebar{position:sticky;top:0;z-index:20;width:100%;background:#102b43;border:0;border-radius:0;padding:8px 12px;box-shadow:0 4px 14px #15284a18;overflow:hidden;white-space:normal}.sidebar strong{display:none}.sidebar nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(4px,.65vw,12px);width:100%;min-width:0;flex-wrap:nowrap}.sidebar a{display:inline-block;text-decoration:none;color:#dce7f5;padding:5px 0;border-radius:0;font-size:clamp(.58rem,.72vw,.84rem);line-height:1.3;white-space:nowrap}main{max-width:1180px;margin:0 auto;padding:0 18px 60px}.sidebar a:hover{background:transparent;color:#fff;text-decoration:underline;text-underline-offset:5px}main{min-width:0}.section{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,30px);margin-bottom:20px;box-shadow:var(--shadow);scroll-margin-top:18px}.section h2{font-size:1.55rem;line-height:1.2;margin:0 0 14px}.section h3{font-size:1.08rem;margin:22px 0 8px}.muted{color:var(--muted)}.lead{font-size:1.06rem}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.tile{background:#f7f9fd;border:1px solid var(--line);padding:15px;border-radius:13px}.tile b{display:block;margin-bottom:5px}.tag{display:inline-block;background:#e8f8f8;color:#08727a;border-radius:7px;padding:3px 8px;font-size:.78rem;font-weight:800}.callout{border-left:4px solid var(--cyan);background:#eefbfc;padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}.warning{border-left-color:var(--gold);background:#fff8e9}.equation{font:600 1.04rem ui-monospace,SFMono-Regular,Consolas,monospace;background:#101d35;color:#e8f3ff;border-radius:10px;padding:13px 16px;overflow:auto;margin:10px 0}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.94rem}th,td{text-align:left;padding:10px 11px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f0f4fa}.diagram{background:#fbfdff;border:1px solid var(--line);border-radius:14px;padding:12px;overflow:hidden}.diagram svg{width:100%;height:auto;display:block}.caption{font-size:.86rem;color:var(--muted);margin-top:8px}.simulator{background:linear-gradient(145deg,#101d35,#19345a);color:#eff7ff;border-radius:16px;padding:20px}.simulator h3{margin-top:0}.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.control label{display:flex;justify-content:space-between;gap:8px;font-weight:700}.control input[type=range]{width:100%;accent-color:#57dce2}.readouts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}.readout{background:#ffffff10;border:1px solid #ffffff20;border-radius:12px;padding:12px}.readout small{display:block;color:#bcd0ed}.readout strong{font-size:1.3rem}.simulator canvas{width:100%;height:170px;background:#091326;border-radius:10px;display:block}.led-stage{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#0a1528;border-radius:12px;padding:16px;margin:14px 0}.led{width:65px;height:65px;border-radius:50%;background:#344050;border:4px solid #718098;box-shadow:inset 0 0 10px #0008;transition:box-shadow .15s,background .15s}.led-label{font-weight:700}.code{white-space:pre;overflow:auto;background:#0c172a;color:#e4f2ff;border-radius:12px;padding:17px;font: .9rem/1.55 ui-monospace,Consolas,monospace}.copyrow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.quizq{border:1px solid var(--line);border-radius:12px;padding:15px;margin:13px 0}.quizq legend,.quizq h3{font-weight:800}.options{display:grid;gap:7px;margin-top:9px}.options label{display:flex;gap:9px;align-items:flex-start;padding:8px;border-radius:8px;background:#f8faff;cursor:pointer}.options label:hover{background:#edf3ff}.feedback{margin-top:10px;padding:10px;border-radius:8px;display:none}.feedback.good{display:block;background:#e8f8ef;color:#126441}.feedback.bad{display:block;background:#fff0f0;color:#9e2736}.scorebox{display:none;margin:15px 0;padding:16px;border-radius:12px;background:#edf3ff;border:1px solid #cad8ff}.scorebox.show{display:block}.answer details{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:9px 0}.answer summary{font-weight:750;cursor:pointer}.formula-list li{margin:7px 0}.footer{text-align:center;color:var(--muted);padding:20px}.pillnav{display:flex;flex-wrap:wrap;gap:8px}.pillnav a{background:#eef3ff;border-radius:999px;padding:7px 12px;text-decoration:none;font-size:.9rem}.hide{display:none!important}
+@media(max-width:850px){.layout{display:block}.sidebar{position:sticky;max-height:none;overflow:visible;padding:8px 10px}.sidebar nav{display:flex;justify-content:flex-start;gap:8px 14px;flex-wrap:wrap}.sidebar a{font-size:.78rem}.grid3{grid-template-columns:1fr}.hero{padding-top:30px}.controls{grid-template-columns:1fr}}
+@media(max-width:540px){.grid2,.readouts{grid-template-columns:1fr}.section{padding:17px}.sidebar nav{display:flex;gap:7px 12px;flex-wrap:wrap}.sidebar a{font-size:.76rem}.hero-actions button{width:100%}}
+@media print{body{background:#fff;font-size:11pt;color:#111}.hero{background:#fff;color:#111;padding:20px 0;border-bottom:2px solid #333}.hero p,.eyebrow{color:#333}.hero-actions,.sidebar,.sim-controls,.quiz-buttons,.copyrow button,.no-print{display:none!important}.layout{display:block;max-width:none;padding:0}.section{box-shadow:none;border:1px solid #bbb;break-inside:avoid;margin:12px 0;padding:16px}.simulator{background:#fff;color:#111;border:1px solid #777}.simulator canvas{border:1px solid #888}.readout{background:#fff;border-color:#aaa}.readout small{color:#333}.equation,.code{background:#f2f2f2;color:#111;border:1px solid #aaa;white-space:pre-wrap}.section a{color:#111;text-decoration:none}.footer{display:none}details{break-inside:avoid}}
+
+.intro-circuit-row{display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-items:start;margin-bottom:0}.intro-circuit-row>.section{margin-bottom:20px;min-width:0}.intro-circuit-row #circuits .diagram{padding:7px}.intro-circuit-row #circuits svg{min-width:0}@media(max-width:1050px){.intro-circuit-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="hero" id="top">
+<div class="eyebrow">Interactive ECE learning lab · Analog + Embedded fundamentals</div>
+<h1>PWM Signalling<br/>in Arduino</h1>
+<p>Explore Pulse Width Modulation with a live duty-cycle simulator, labelled circuit, Arduino sketch, waveforms, worked calculations, GATE-style practice, interview answers, and revision notes—all in one offline webpage.</p>
+<div class="hero-actions"><button onclick="document.querySelector('#simulator').scrollIntoView()">Launch PWM lab ↓</button><button class="outline" onclick="window.print()">Print / Save PDF</button></div>
+</header>
+<div class="layout">
+<aside class="sidebar"><strong>Learning map</strong><nav><a href="#intro">Intro</a><a href="#circuits">Circuits</a><a href="#principle">Principle</a><a href="#code">Code</a><a href="#waveforms">Waveforms</a><a href="#simulator">Simulator</a><a href="#equations">Equations</a><a href="#solved">Solved</a><a href="#gate">GATE</a><a href="#gate-quiz">GATE Quiz</a><a href="#interview">Interview</a><a href="#applications">Applications</a><a href="#topic-quiz">Topic Quiz</a><a href="#revision">Revision</a><a href="#notes">Notes</a><a href="#checklist">Practical Checklist</a></nav></aside>
+<main><div class="intro-circuit-row"><section class="section" id="intro"><span class="tag">START HERE</span><h2>Intro</h2>
+<p class="lead"><b>Pulse Width Modulation (PWM)</b> controls the average power delivered to a load by switching a digital signal between LOW and HIGH and changing how long it stays HIGH during each period.</p>
+<div class="grid2">
+<div class="tile"><b>Why it matters</b>Arduino pins are digital outputs, but PWM lets us control perceived LED brightness and the speed of suitable DC motors without producing a true continuously variable voltage.</div>
+<div class="tile"><b>By the end, you can</b>Define duty cycle and frequency, read a PWM waveform, wire an LED safely, change brightness using Arduino, calculate ON time, and troubleshoot common issues.</div>
+<div class="tile"><b>Prerequisites</b>Voltage, current, digital HIGH/LOW, Ohm’s law, basic Arduino pin and sketch concepts.</div>
+<div class="tile"><b>Key vocabulary</b>Period (T), frequency (f), duty cycle (D), pulse width (tON), LOW time (tOFF), PWM-capable pin, `analogWrite()`.</div>
+</div>
+<h3>Types and control approaches</h3>
+<div class="tablewrap"><table><thead><tr><th>Approach</th><th>What changes?</th><th>Example</th></tr></thead><tbody><tr><td>Fixed frequency, variable duty</td><td>ON-time changes; period stays constant</td><td>LED brightness using Arduino PWM</td></tr><tr><td>Variable frequency PWM</td><td>Period and pulse timing may change</td><td>Some motor/control applications</td></tr><tr><td>Hardware PWM</td><td>Timer/counter peripheral generates pulses</td><td>Arduino timer output pin</td></tr><tr><td>Software-timed pulses</td><td>Code manually toggles a pin</td><td>Simple demonstrations; timing can jitter</td></tr></tbody></table></div>
+<div class="callout"><b>Important distinction:</b> On a classic Arduino Uno, `analogWrite(pin, value)` usually accepts a value from 0 to 255. It generates PWM on supported pins; it does <i>not</i> output a true analog voltage. PWM frequency depends on the board and pin/timer configuration.</div>
+</section><section class="section" id="circuits"><h2>Circuits</h2>
+<div class="diagram">
+<svg aria-label="Arduino Uno PWM pin 9 connected through a 220 ohm resistor to an LED, then to ground" role="img" viewbox="0 0 820 350">
+<defs><marker id="arr" markerheight="8" markerwidth="8" orient="auto" refx="5" refy="3"><path d="M0,0 L6,3 L0,6 Z" fill="#2457d6"></path></marker></defs>
+<rect fill="#dff4e9" height="205" rx="18" stroke="#22845e" stroke-width="2" width="250" x="28" y="65"></rect>
+<text fill="#175a42" font-size="20" font-weight="bold" text-anchor="middle" x="153" y="96">ARDUINO UNO</text>
+<rect fill="#fff" height="42" rx="7" stroke="#22845e" width="205" x="50" y="122"></rect><text fill="#17243a" font-size="16" text-anchor="middle" x="152" y="148">Digital pin 9 (~PWM)</text>
+<text fill="#175a42" font-size="14" text-anchor="middle" x="152" y="199">GND pin</text>
+<path d="M278 143 H350" fill="none" stroke="#2457d6" stroke-width="4"></path><circle cx="350" cy="143" fill="#2457d6" r="5"></circle>
+<path d="M350 143 l12 -15 l18 30 l18 -30 l18 30 l18 -30 l18 15 H470" fill="none" stroke="#2457d6" stroke-width="3"></path>
+<text fill="#17243a" font-size="16" font-weight="bold" text-anchor="middle" x="410" y="108">R1 = 220 Ω</text>
+<path d="M470 143 H528" stroke="#2457d6" stroke-width="4"></path>
+<polygon fill="#ffdf9b" points="528,125 528,161 560,143" stroke="#b76b00" stroke-width="2"></polygon>
+<path d="M563 123 V163" stroke="#b76b00" stroke-width="4"></path><path d="M563 143 H625 V220 H500" fill="none" stroke="#2457d6" stroke-width="4"></path>
+<text fill="#17243a" font-size="16" font-weight="bold" text-anchor="middle" x="546" y="105">LED</text>
+<path d="M500 220 H152 V270" fill="none" stroke="#2457d6" stroke-width="4"></path>
+<path d="M132 270 H172 M138 279 H166 M145 288 H159" stroke="#17243a" stroke-width="3"></path>
+<text fill="#17243a" font-size="15" text-anchor="middle" x="420" y="251">LED cathode → GND</text>
+<path d="M320 60 V35 H460" fill="none" marker-end="url(#arr)" stroke="#13a8b5" stroke-width="2"></path>
+<text fill="#08727a" font-size="14" x="468" y="40">PWM pulse signal</text>
+<text fill="#5c6b80" font-size="14" text-anchor="middle" x="410" y="320">Common ground is essential · use a current-limiting resistor</text>
+</svg>
+</div>
+<p class="caption">Illustrative wiring: Arduino digital pin 9 → 220 Ω resistor → LED anode; LED cathode → GND. The resistor and LED are in series. Keep the LED polarity correct.</p>
+<div class="tablewrap"><table><thead><tr><th>Part</th><th>Purpose</th><th>Connection / note</th></tr></thead><tbody><tr><td>Arduino Uno</td><td>Generates the PWM signal</td><td>Use pin 9, marked with ~ on the Uno</td></tr><tr><td>220 Ω resistor</td><td>Limits LED current</td><td>Series with the LED; 220–330 Ω is a common starting range</td></tr><tr><td>LED</td><td>Visual output indicator</td><td>Anode toward resistor/pin; cathode toward GND</td></tr><tr><td>GND</td><td>Provides the return path</td><td>Connect LED cathode to Arduino ground</td></tr></tbody></table></div>
+<div class="callout warning"><b>Safety:</b> Do not connect an LED directly to a GPIO pin without a current-limiting resistor. Do not drive a motor directly from an Arduino pin; use a suitable transistor/MOSFET or motor-driver circuit, with an appropriate supply and protection.</div>
+</section></div><section class="section" id="principle"><h2>Principle</h2>
+<ol><li>Arduino’s timer hardware repeatedly creates a digital pulse on a PWM-capable output.</li><li>The signal alternates between LOW (approximately 0 V) and HIGH (approximately the board’s logic voltage, often 5 V on a classic Uno).</li><li>The duty cycle sets the percentage of each period spent HIGH.</li><li>The LED responds to the average current/light over time, so a higher duty cycle generally appears brighter to our eyes.</li><li>For a motor, PWM rapidly switches power; motor inductance and mechanical inertia smooth the response. A driver stage is normally required.</li></ol>
+<div class="grid2"><div class="tile"><b>DC view</b>At 0% the pin is LOW; at 100% it is HIGH. Intermediate values are rapid switching, not a steady intermediate voltage.</div><div class="tile"><b>Time-domain view</b>Frequency determines how often pulses repeat. Duty cycle determines the HIGH fraction of each period.</div></div>
+<h3>Operating assumptions</h3><ul><li>For simple calculations, assume ideal 0 V LOW and 5 V HIGH.</li><li>Assume a fixed PWM frequency when comparing duty cycles.</li><li>Actual board voltage, PWM frequency, timer setup, load and LED response can differ.</li></ul>
+<h3>Advantages and limitations</h3><div class="tablewrap"><table><thead><tr><th>Advantages</th><th>Limitations</th></tr></thead><tbody><tr><td>Efficient power control; simple digital control; easy to generate with timers; useful for LEDs and motors.</td><td>Switching can cause EMI; output is not true analog DC; timer pins share hardware resources; load drivers and filtering may be needed.</td></tr></tbody></table></div>
+<div class="callout warning"><b>Common misconception:</b> `analogWrite(9, 128)` does not mean the pin continuously outputs 2.5 V. On a classic Uno it produces a PWM waveform with a duty cycle near 50% (128/255 ≈ 50.2%), subject to board implementation.</div>
+</section><section class="section" id="code"><h2>Code</h2><p>This sketch gradually increases and decreases LED brightness using PWM on pin 9. Use a series resistor with the LED.</p>
+<div class="copyrow"><b>Arduino IDE sketch</b><button class="secondary" id="copyCode">Copy code</button></div>
+<pre class="code" id="arduinoCode">const int ledPin = 9;  // PWM-capable pin on Arduino Uno
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // Fade from OFF to full brightness
+  for (int value = 0; value &lt;= 255; value++) {
+    analogWrite(ledPin, value);
+    delay(10);
+  }
+
+  // Fade from full brightness to OFF
+  for (int value = 255; value &gt;= 0; value--) {
+    analogWrite(ledPin, value);
+    delay(10);
+  }
+}</pre>
+<h3>How the code works</h3><ul><li>`ledPin = 9` selects a PWM-capable output on a classic Uno.</li><li>`pinMode()` configures the pin as an output.</li><li>`analogWrite()` sets the PWM command from 0 to 255.</li><li>`delay(10)` makes each step visible; the PWM signal itself is generated by hardware while the program continues.</li></ul>
+<div class="callout"><b>Experiment idea:</b> Replace the fade loops with `analogWrite(ledPin, 64)`, then 128, 192 and 255. Record how the perceived brightness changes. Do not expect brightness to look perfectly linear to the eye.</div>
+</section><section class="section" id="waveforms"><h2>Waveforms</h2><p>A PWM signal is a repeating digital pulse. Changing duty cycle changes the HIGH-time fraction; the period stays the same in this fixed-frequency illustration.</p>
+<div class="diagram"><svg aria-label="Illustrative PWM waveforms with 25 percent, 50 percent, and 75 percent duty cycles" role="img" viewbox="0 0 800 290"><g stroke="#dce4ef" stroke-width="1"><path d="M110 40H770 M110 110H770 M110 180H770 M110 250H770"></path></g><g fill="#17243a" font-size="15" font-weight="bold"><text x="12" y="68">25% duty</text><text x="12" y="138">50% duty</text><text x="12" y="208">75% duty</text></g><g fill="none" stroke="#2457d6" stroke-width="4"><path d="M110 80V40H275V80H440V40H605V80H770"></path><path d="M110 150V110H275V150H440V110H605V150H770"></path><path d="M110 220V180H275V220H440V180H605V220H770"></path></g><g fill="#5c6b80" font-size="13"><text x="115" y="278">Time → (illustrative; not measured hardware data)</text><text x="730" y="30">HIGH</text><text x="730" y="98">LOW</text></g></svg></div><p class="caption">Illustrative waveform shapes only. Use an oscilloscope or logic analyzer to measure real hardware signals.</p></section><section class="section" id="simulator"><span class="tag">TRY IT NOW</span><h2>Simulator</h2><p>Move the duty-cycle slider and watch the PWM waveform and the illustrative LED brightness change. This is a browser-based educational model—not a physical electrical simulation and not a measured hardware result.</p>
+<div class="simulator">
+<h3>Virtual PWM bench</h3>
+<div class="controls sim-controls">
+<div class="control"><label for="duty">Duty cycle <output id="dutyOut">50%</output></label><input id="duty" max="100" min="0" step="1" type="range" value="50"/><div class="muted" style="color:#bcd0ed;font-size:.85rem">0% = always LOW · 100% = always HIGH</div></div>
+<div class="control"><label for="freq">Illustrative frequency <output id="freqOut">500 Hz</output></label><input id="freq" max="2000" min="100" step="100" type="range" value="500"/><div class="muted" style="color:#bcd0ed;font-size:.85rem">Used for the displayed period calculation</div></div>
+</div>
+<div class="readouts"><div class="readout"><small>ON time</small><strong id="onTime">1.00 ms</strong></div><div class="readout"><small>OFF time</small><strong id="offTime">1.00 ms</strong></div><div class="readout"><small>Ideal average output*</small><strong id="avgVolt">2.50 V</strong></div></div>
+<canvas aria-label="PWM waveform showing high and low states" height="220" id="wave" width="900"></canvas>
+<div class="led-stage"><div aria-label="Illustrative LED brightness" class="led" id="ledVisual"></div><div><div class="led-label" id="ledStatus">LED: medium illustrative brightness</div><small style="color:#bcd0ed">Brightness visualization is illustrative; real LED brightness is not perfectly linear with duty cycle.</small></div></div>
+<p style="color:#bcd0ed;font-size:.84rem">*The displayed average voltage is an idealized calculation for a 0–5 V PWM signal: Vavg = D × 5 V. It is not a true analog output from the Arduino pin.</p>
+<button class="secondary" id="resetLab">Reset lab</button>
+</div>
+<h3>What to observe</h3>
+<ul><li>Increasing duty cycle keeps the output HIGH for a larger fraction of each period.</li><li>At 50%, HIGH and LOW times are equal.</li><li>At 0%, the signal remains LOW; at 100%, it remains HIGH, so regular pulses disappear at these endpoints.</li></ul>
+</section><section class="section" id="equations"><h2>Equations</h2>
+<h3>Core equations</h3>
+<div class="equation">T = tON + tOFF</div><p><b>T</b> = period in seconds; <b>tON</b> = HIGH time in seconds; <b>tOFF</b> = LOW time in seconds.</p>
+<div class="equation">f = 1 / T</div><p><b>f</b> = frequency in hertz (Hz), and <b>T</b> is in seconds. Higher frequency means a shorter period.</p>
+<div class="equation">D = (tON / T) × 100%</div><p><b>D</b> = duty cycle. Use the same time units in the ratio.</p>
+<div class="equation">tON = (D / 100) × T    ;    tOFF = T − tON</div>
+<div class="equation">Vavg ≈ Dfraction × VH</div><p>For ideal PWM switching between 0 V and a HIGH level <b>VH</b>, the average over one period is the duty fraction multiplied by VH. This describes the mathematical average, not necessarily the instantaneous pin voltage or a true analog output.</p>
+<h3>Derivation of average voltage</h3><p>During tON, voltage is VH; during tOFF, voltage is 0 V. The average over one period is the time-weighted mean:</p>
+<div class="equation">Vavg = [VH × tON + 0 × tOFF] / T<br/>Vavg = VH × (tON / T) = VH × Dfraction</div>
+<h3>Arduino Uno mapping (classic 8-bit `analogWrite`)</h3>
+<div class="equation">analogWrite(pin, value), value = 0…255<br/>Approximate duty fraction ≈ value / 255</div>
+<p>This approximation is useful for basic calculations; exact timer behavior and frequency are board- and core-dependent. Values 0 and 255 are normally fully LOW and fully HIGH respectively.</p>
+</section><section class="section" id="solved"><h2>Solved</h2>
+<h3>Example 1 — Find duty cycle (Easy)</h3><p><b>Given:</b> Period T = 4 ms; HIGH time = 1 ms. <b>Find:</b> Duty cycle.</p><p><b>Formula:</b> D = (tON/T) × 100%</p><div class="equation">D = (1 ms / 4 ms) × 100% = 25%</div><p><b>Interpretation:</b> The signal is HIGH for one-quarter of each cycle.</p>
+<h3>Example 2 — Find ON and OFF time (Moderate)</h3><p><b>Given:</b> f = 1 kHz and D = 60%. <b>Find:</b> Period, ON time and OFF time.</p><div class="equation">T = 1/f = 1/1000 s = 1 ms<br/>tON = 0.60 × 1 ms = 0.60 ms<br/>tOFF = 1.00 − 0.60 = 0.40 ms</div><p><b>Interpretation:</b> Each 1 ms cycle is HIGH for 0.6 ms and LOW for 0.4 ms.</p>
+<h3>Example 3 — Ideal average voltage (GATE-style, Moderate)</h3><p><b>Given:</b> Ideal PWM swings between 0 V and 5 V with duty cycle 40%. <b>Find:</b> Average voltage.</p><div class="equation">Vavg = Dfraction × VH = 0.40 × 5 V = 2.0 V</div><p><b>Answer:</b> 2.0 V average in the ideal mathematical sense. The actual pin still switches between LOW and HIGH.</p>
+<h3>Example 4 — Arduino value (Difficult)</h3><p><b>Given:</b> Classic 8-bit `analogWrite()` and value = 192. Estimate the duty cycle and ideal average voltage for a 5 V HIGH level.</p><div class="equation">D ≈ (192 / 255) × 100% ≈ 75.3%<br/>Vavg ≈ (192 / 255) × 5 V ≈ 3.76 V</div><p><b>Interpretation:</b> The waveform is HIGH for about three-quarters of each cycle. Do not describe 3.76 V as the instantaneous pin output.</p>
+</section><section class="section" id="gate"><span class="tag">EXAM FOCUS</span><h2>GATE</h2>
+<p class="lead">For PWM questions, first identify the period and duty cycle, then use the reciprocal frequency relation and time-weighted average.</p>
+<div class="grid2"><div class="tile"><b>High-priority concepts</b><ul><li>Frequency and period: f = 1/T.</li><li>Duty cycle: D = tON/T × 100%.</li><li>For ideal 0-to-VH PWM, Vavg = Dfraction × VH.</li><li>Duty cycle and frequency are different quantities.</li></ul></div><div class="tile"><b>Exam approach</b><ul><li>Convert milliseconds to seconds before calculating frequency.</li><li>Keep duty cycle as a fraction when using average-voltage equations.</li><li>Distinguish instantaneous HIGH/LOW levels from average voltage.</li><li>Check whether the question assumes fixed frequency.</li></ul></div></div>
+<div class="callout"><b>Common trap:</b> A 50% duty-cycle signal switching between 0 V and 5 V has an ideal average of 2.5 V, but it does not stay continuously at 2.5 V.</div></section><section class="section" id="gate-quiz"><h2>GATE Quiz</h2><p class="muted">These are original practice questions written for revision, not claimed as actual previous-year GATE questions.</p>
+<div id="gateQuestions"></div><div class="quiz-buttons"><button id="gateCheck">Check GATE answers</button> <button class="secondary" id="gateReset">Reset GATE practice</button></div><div class="scorebox" id="gateScore"></div>
+</section><section class="section" id="interview"><h2>Interview</h2><p>Expand each question to review a concise answer. Try saying the answer aloud before opening it.</p>
+<div class="answer" id="interviewAnswers">
+<details><summary>1. What is PWM?</summary><p>PWM is a method of controlling average power by switching a digital signal and varying the fraction of each period it remains HIGH.</p></details>
+<details><summary>2. What is duty cycle?</summary><p>Duty cycle is the ratio of HIGH time to total period, usually expressed as a percentage: D = tON/T × 100%.</p></details>
+<details><summary>3. Does Arduino `analogWrite()` create a true analog voltage?</summary><p>No. On common Arduino boards it generates PWM on supported pins. A filter or a suitable DAC is needed for a smoother analog voltage.</p></details>
+<details><summary>4. What is the relationship between frequency and period?</summary><p>They are reciprocals: f = 1/T. If frequency rises, period falls.</p></details>
+<details><summary>5. Why is a resistor required with an LED?</summary><p>It limits current to a safe value and protects the LED and GPIO pin from excessive current.</p></details>
+<details><summary>6. How would you measure PWM duty cycle in a lab?</summary><p>Use an oscilloscope or logic analyzer to measure tON and T, then calculate D = tON/T × 100%.</p></details>
+<details><summary>7. The LED does not change brightness. What would you check?</summary><p>Check LED polarity, resistor and GND wiring, selected PWM pin, uploaded sketch, pin number, and whether the simulator supports the selected board.</p></details>
+<details><summary>8. Why should a motor not be connected directly to an Arduino GPIO?</summary><p>A motor can draw more current than the pin can safely supply and can generate inductive voltage spikes. Use a suitable driver and protection circuit.</p></details>
+<details><summary>9. Why might two PWM pins have different frequencies?</summary><p>Different pins may be driven by different timer peripherals or timer configurations. The exact mapping depends on the board and core.</p></details>
+<details><summary>10. How can PWM control a DC motor?</summary><p>A driver switches motor power in pulses. Duty cycle adjusts average applied voltage/power, influencing speed under the given load. Direction control usually requires a suitable H-bridge.</p></details>
+<details><summary>11. What causes PWM-related electromagnetic interference?</summary><p>Fast switching edges and current loops can radiate or conduct noise. Good grounding, short loops, decoupling, suitable switching frequency and filtering can help.</p></details>
+<details><summary>12. What is the difference between PWM and DAC output?</summary><p>PWM encodes a value as pulse timing; a DAC converts a digital code into an analog level. Filtering PWM can approximate an analog level, but ripple and response time remain.</p></details>
+</div>
+<h3>Industry perspective</h3><p>PWM is used in LED dimmers, fan and motor control, power converters, heater control and embedded products. Engineers must consider switching losses, ripple, audible noise, EMI, timer resolution, thermal limits, load-driver ratings and safety validation.</p>
+</section><section class="section" id="applications"><h2>Applications</h2>
+<div class="grid2"><div class="tile"><b>Lighting</b>LED dimming, status lighting, display backlights.</div><div class="tile"><b>Motion</b>DC motor speed control through a driver, small fans and robotics.</div><div class="tile"><b>Power electronics</b>Switch-mode power supplies and converter control (with dedicated control and protection).</div><div class="tile"><b>Embedded control</b>Actuator power control, test rigs and educational prototypes.</div></div>
+<h3>Quick troubleshooting table</h3><div class="tablewrap"><table><thead><tr><th>Symptom</th><th>Possible cause</th><th>Check / fix</th></tr></thead><tbody><tr><td>LED stays off</td><td>Reversed LED, wrong pin, no ground, sketch not uploaded</td><td>Verify polarity, pin 9, common GND and board selection</td></tr><tr><td>LED always bright</td><td>Value is 255, pin configured HIGH elsewhere, wrong wiring</td><td>Check `analogWrite()` value and code path</td></tr><tr><td>No visible brightness steps</td><td>Human vision is nonlinear; steps are too small or simulator limitation</td><td>Try values 0, 64, 128, 192, 255</td></tr><tr><td>Unexpected waveform</td><td>Wrong pin, timer reconfiguration, measurement setup</td><td>Confirm board pinout and timer-related libraries; measure against GND</td></tr><tr><td>Motor resets Arduino</td><td>Supply sag or electrical noise</td><td>Use an appropriate motor supply/driver, common reference as required, decoupling and protection</td></tr></tbody></table></div>
+</section><section class="section" id="topic-quiz"><h2>Topic Quiz</h2><p>Select one answer for each question, then check your score. Correct, incorrect and unanswered questions are reported separately with explanations.</p>
+<form id="topicQuiz"><div id="topicQuestions"></div><div class="quiz-buttons"><button type="submit">Check answers</button> <button class="secondary" id="quizReset" type="button">Reset quiz</button></div></form><div class="scorebox" id="topicScore"></div></section><section class="section" id="revision"><h2>Revision</h2>
+<ul class="formula-list"><li><b>Period:</b> T = tON + tOFF (seconds).</li><li><b>Frequency:</b> f = 1/T (Hz).</li><li><b>Duty cycle:</b> D = (tON/T) × 100%.</li><li><b>ON time:</b> tON = (D/100) × T.</li><li><b>OFF time:</b> tOFF = T − tON.</li><li><b>Ideal average:</b> Vavg ≈ Dfraction × VH for a 0-to-VH waveform.</li><li><b>Classic Uno PWM command:</b> `analogWrite(pin, value)`, value typically 0–255 on supported pins.</li></ul>
+<h3>High-priority points</h3><ul><li>Duty cycle controls the HIGH-time fraction; frequency controls how often pulses repeat.</li><li>PWM is digital switching, not a true analog output.</li><li>At 50% duty, tON = tOFF = T/2.</li><li>Always use a current-limiting resistor with a simple LED circuit.</li><li>Use a driver for motors and other loads that need more current than a GPIO can safely provide.</li><li>Board families differ: confirm PWM pins, voltage levels, resolution and frequency for your exact Arduino.</li></ul>
+<h3>Compare related concepts</h3><div class="tablewrap"><table><thead><tr><th>Concept</th><th>Main idea</th><th>Typical use</th></tr></thead><tbody><tr><td>PWM</td><td>Vary pulse duty cycle</td><td>Power control, dimming</td></tr><tr><td>DAC</td><td>Convert digital code to analog level</td><td>Analog output where supported</td></tr><tr><td>Digital ON/OFF</td><td>Only two commanded states</td><td>Switches, simple indicators</td></tr><tr><td>Filtered PWM</td><td>Low-pass filter smooths pulse average</td><td>Approximate analog control voltage</td></tr></tbody></table></div>
+<div class="callout"><b>Memory aid:</b> “Duty decides how long; frequency decides how often.”</div>
+</section><section class="section" id="notes"><h2>Notes</h2><p>No simulation screenshot was attached, so this page includes an illustrative circuit and a browser-based PWM model instead of claiming a real Multisim or hardware result.</p>
+<h3>Suggested practical workflow</h3><ol><li>Build the Arduino Uno–resistor–LED circuit shown above in your available Arduino simulator or on a breadboard.</li><li>Upload the fade sketch. Confirm that the LED fades from dim/off to bright and back.</li><li>To observe the signal, connect an oscilloscope or logic analyzer to pin 9 and GND.</li><li>Try fixed values such as 64, 128 and 192; observe the pulse-width change.</li><li>Capture your actual circuit and waveform screenshot and add it to your report if your instructor requires proof of simulation.</li></ol>
+<h3>Expected observations (theoretical)</h3><div class="tablewrap"><table><thead><tr><th>Command</th><th>Approx. duty</th><th>Expected output</th></tr></thead><tbody><tr><td>`analogWrite(9, 0)`</td><td>0%</td><td>Pin LOW; LED off</td></tr><tr><td>`analogWrite(9, 64)`</td><td>25.1%</td><td>Low average power; dimmer LED</td></tr><tr><td>`analogWrite(9, 128)`</td><td>50.2%</td><td>Medium perceived brightness</td></tr><tr><td>`analogWrite(9, 192)`</td><td>75.3%</td><td>Higher perceived brightness</td></tr><tr><td>`analogWrite(9, 255)`</td><td>100%</td><td>Pin HIGH; LED fully on</td></tr></tbody></table></div>
+<div class="callout warning"><b>Hardware note:</b> Multisim support for Arduino simulation depends on the installed version and components available. If the exact Arduino model is unavailable, use a compatible Arduino simulator or real Uno hardware, and clearly identify the tool actually used.</div>
+</section><section class="section" id="checklist"><h2>Practical Checklist</h2><ul><li>Confirm the selected Arduino board and PWM-capable pin.</li><li>Check LED polarity and install a 220–330 Ω series resistor.</li><li>Connect the circuit ground correctly.</li><li>Upload the sketch and test values 0, 64, 128, 192 and 255.</li><li>Use an oscilloscope to capture actual waveforms if required by your lab report.</li><li>Record the real simulator/hardware used; do not label illustrative graphics as measured results.</li></ul></section></main>
+</div>
+<footer class="footer">PWM Signalling in Arduino · Self-contained learning page · Illustrations and virtual lab are educational, not certified hardware measurements.</footer>
+<script>
+const labDuty=document.getElementById('duty'), labFreq=document.getElementById('freq');
+const wave=document.getElementById('wave'), ctx=wave.getContext('2d');
+function drawWave(){
+ const d=+labDuty.value, f=+labFreq.value, W=wave.width, H=wave.height;
+ document.getElementById('dutyOut').textContent=d+'%';
+ document.getElementById('freqOut').textContent=f+' Hz';
+ const T=1000/f, on=T*d/100, off=T-on;
+ document.getElementById('onTime').textContent=on.toFixed(3)+' ms';
+ document.getElementById('offTime').textContent=off.toFixed(3)+' ms';
+ document.getElementById('avgVolt').textContent=(5*d/100).toFixed(2)+' V';
+ ctx.clearRect(0,0,W,H);ctx.fillStyle='#091326';ctx.fillRect(0,0,W,H);
+ ctx.strokeStyle='#243957';ctx.lineWidth=1;
+ for(let x=0;x<=W;x+=W/10){ctx.beginPath();ctx.moveTo(x,18);ctx.lineTo(x,H-25);ctx.stroke()}
+ for(let y=25;y<=H-25;y+=42){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+ const highY=45, lowY=H-38, cycles=3, cycleW=W/cycles;
+ ctx.strokeStyle='#5ce1e4';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,d===0?lowY:highY);
+ for(let c=0;c<cycles;c++){let x=c*cycleW, hx=x+cycleW*d/100, ex=(c+1)*cycleW;
+   if(c===0)ctx.moveTo(x,d===0?lowY:highY);
+   ctx.lineTo(hx,d===0?lowY:highY);ctx.lineTo(hx,lowY);ctx.lineTo(ex,lowY);
+   if(d>0&&d<100&&c<cycles-1)ctx.lineTo(ex,highY);
+   if(d===100)ctx.lineTo(ex,highY);
+ }
+ ctx.stroke();ctx.fillStyle='#dbe9ff';ctx.font='18px system-ui';ctx.fillText('HIGH',12,highY-12);ctx.fillText('LOW',12,lowY+22);
+ ctx.fillStyle='#9fb6d6';ctx.font='14px system-ui';ctx.fillText('Illustrative waveform · '+f+' Hz · '+d+'% duty',W-350,H-7);
+ const led=document.getElementById('ledVisual');
+ let intensity=d/100;let glow=Math.round(4+intensity*24);
+ led.style.background=d===0?'#344050':`rgb(255, ${Math.round(90+intensity*130)}, ${Math.round(10+intensity*25)})`;
+ led.style.boxShadow=d===0?'inset 0 0 10px #0008':`0 0 ${glow}px ${Math.round(glow/2)}px rgba(255,170,30,${.08+intensity*.65}), inset 0 0 12px #fff8`;
+ document.getElementById('ledStatus').textContent=d===0?'LED: OFF':d===100?'LED: fully ON (illustrative)':`LED: ${d<30?'low':d<65?'medium':'high'} illustrative brightness`;
+}
+labDuty.addEventListener('input',drawWave);labFreq.addEventListener('input',drawWave);
+document.getElementById('resetLab').addEventListener('click',()=>{labDuty.value=50;labFreq.value=500;drawWave()});
+drawWave();
+document.getElementById('copyCode').addEventListener('click',async()=>{const code=document.getElementById('arduinoCode').textContent;try{await navigator.clipboard.writeText(code);document.getElementById('copyCode').textContent='Copied!'}catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById('arduinoCode'));const s=window.getSelection();s.removeAllRanges();s.addRange(r);document.getElementById('copyCode').textContent='Select and copy'}setTimeout(()=>document.getElementById('copyCode').textContent='Copy code',1800)});
+const gateData=[
+{q:'PWM stands for:',o:['Pulse Width Modulation','Power Wave Measurement','Pulse Wire Mode','Phase Width Matching'],a:0,e:'PWM means Pulse Width Modulation.' ,d:'Easy'},
+{q:'A signal has T = 2 ms. Its frequency is:',o:['50 Hz','200 Hz','500 Hz','2 kHz'],a:2,e:'f = 1/T = 1/0.002 s = 500 Hz.',d:'Easy'},
+{q:'If tON = 3 ms and T = 5 ms, duty cycle is:',o:['30%','40%','60%','80%'],a:2,e:'D = (3/5) × 100% = 60%.',d:'Easy'},
+{q:'For ideal PWM from 0 V to 5 V at 20% duty, average voltage is:',o:['0.5 V','1 V','2.5 V','4 V'],a:1,e:'Vavg = 0.20 × 5 V = 1 V. The instantaneous waveform still switches between 0 and 5 V.',d:'Moderate'},
+{q:'At 25% duty and a 4 ms period, tOFF is:',o:['1 ms','2 ms','3 ms','4 ms'],a:2,e:'tON = 0.25 × 4 = 1 ms; tOFF = 4 − 1 = 3 ms.',d:'Moderate'},
+{q:'On a classic Arduino Uno, `analogWrite(pin, 128)` most closely means:',o:['Steady 2.5 V output','PWM near 50% duty','A 128 Hz output','128 V output'],a:1,e:'The value sets a PWM duty command; it does not directly create a steady 2.5 V analog output.',d:'Moderate'},
+{q:'Which instrument is most suitable to view pulse width and duty cycle directly?',o:['Thermometer','Oscilloscope','Ohmmeter only','Ammeter only'],a:1,e:'An oscilloscope displays voltage versus time, allowing period and HIGH time measurements.',d:'Easy'},
+{q:'A motor draws more current than an Arduino GPIO can safely supply. The best solution is:',o:['Connect it directly anyway','Use a suitable motor driver','Remove all ground connections','Increase `delay()` only'],a:1,e:'A rated driver stage handles load current and helps protect the microcontroller.',d:'Moderate'},
+{q:'For a fixed period, increasing duty cycle from 30% to 70% causes:',o:['Shorter HIGH time','Longer HIGH time','Frequency necessarily doubles','The signal becomes analog DC'],a:1,e:'At fixed period, the HIGH fraction rises, so tON increases. Frequency remains fixed by assumption.',d:'Moderate'},
+{q:'A PWM signal has frequency 2 kHz and duty cycle 75%. Its ON time is:',o:['0.125 ms','0.25 ms','0.375 ms','0.75 ms'],a:2,e:'T = 1/2000 s = 0.5 ms; tON = 0.75 × 0.5 = 0.375 ms.',d:'Difficult'},
+{q:'Which statement about PWM and a DAC is correct?',o:['They are identical in all respects','PWM varies pulse timing; a DAC outputs an analog level','A DAC only outputs digital pulses','PWM can only control audio'],a:1,e:'PWM encodes the command in pulse width; a DAC converts a digital code to an analog level.',d:'Moderate'},
+{q:'What is a common reason to add a low-pass filter after PWM?',o:['To increase pin current limit','To smooth pulses into an approximate analog level','To change code into machine language','To eliminate the need for grounding'],a:1,e:'A low-pass filter attenuates switching ripple, though response speed and ripple must be balanced.',d:'Difficult'}
+];
+function renderPractice(data,containerId,prefix){
+ const el=document.getElementById(containerId);
+ el.innerHTML=data.map((x,i)=>`<fieldset class="quizq" data-q="${i}"><legend>${i+1}. ${x.q} <span class="tag">${x.d||'Practice'}</span></legend><div class="options">${x.o.map((v,j)=>`<label><input type="radio" name="${prefix}${i}" value="${j}"><span>${String.fromCharCode(65+j)}. ${v}</span></label>`).join('')}</div><div class="feedback" id="${prefix}fb${i}"></div></fieldset>`).join('');
+}
+function grade(data,prefix,scoreId){
+ let score=0,correct=0,wrong=0,unanswered=0;
+ data.forEach((x,i)=>{const chosen=document.querySelector(`input[name="${prefix}${i}"]:checked`);const fb=document.getElementById(`${prefix}fb${i}`);fb.className='feedback';if(!chosen){unanswered++;fb.classList.add('bad');fb.textContent=`Unanswered. Correct answer: ${String.fromCharCode(65+x.a)}. ${x.o[x.a]}. ${x.e}`;}else if(+chosen.value===x.a){score++;correct++;fb.classList.add('good');fb.textContent=`Correct. ${x.e}`}else{wrong++;fb.classList.add('bad');fb.textContent=`Incorrect. Correct answer: ${String.fromCharCode(65+x.a)}. ${x.o[x.a]}. ${x.e}`;}});
+ const box=document.getElementById(scoreId);box.className='scorebox show';box.innerHTML=`<b>Score: ${score}/${data.length} (${Math.round(score/data.length*100)}%)</b><br>Correct: ${correct} · Incorrect: ${wrong} · Unanswered: ${unanswered}`;
+}
+function resetQuiz(data,prefix,scoreId){data.forEach((x,i)=>{document.querySelectorAll(`input[name="${prefix}${i}"]`).forEach(n=>n.checked=false);const fb=document.getElementById(`${prefix}fb${i}`);fb.className='feedback';fb.textContent=''});const b=document.getElementById(scoreId);b.className='scorebox';b.textContent='';}
+renderPractice(gateData,'gateQuestions','g');
+document.getElementById('gateCheck').addEventListener('click',()=>grade(gateData,'g','gateScore'));
+document.getElementById('gateReset').addEventListener('click',()=>resetQuiz(gateData,'g','gateScore'));
+const topicData=[
+{q:'What does PWM vary to control average power?',o:['Duty cycle','LED colour only','Arduino clock source always','Wire resistance'],a:0,e:'Duty cycle is the fraction of each period that the output is HIGH.'},
+{q:'Which component limits current in the example LED circuit?',o:['Push button','220 Ω resistor','USB cable only','PWM timer'],a:1,e:'The series resistor limits LED current.'},
+{q:'Which is a PWM-capable pin on a classic Arduino Uno?',o:['Pin 9 (marked ~)','Only AREF','Only RESET','Every pin on every board'],a:0,e:'Digital pin 9 is a PWM output on the classic Uno. Verify the exact board pinout.'},
+{q:'What is the period of a 500 Hz signal?',o:['0.5 ms','2 ms','5 ms','500 ms'],a:1,e:'T = 1/f = 1/500 s = 0.002 s = 2 ms.'},
+{q:'At 50% duty, in an ideal fixed-period waveform:',o:['tON = 0','tON = tOFF','frequency is 0 Hz','voltage is always half the HIGH level'],a:1,e:'Half of the period is HIGH and half is LOW.'},
+{q:'What does `analogWrite(9, 255)` normally command on a classic Uno?',o:['0% duty','About 25% duty','100% duty / fully HIGH','500 Hz guaranteed'],a:2,e:'At the maximum 8-bit value, the output is normally fully HIGH.'},
+{q:'Why does an LED look brighter at a higher PWM duty cycle?',o:['It receives a larger average current over time','PWM changes its physical size','Frequency becomes zero','The resistor disappears'],a:0,e:'Higher duty means the LED is driven HIGH for more of each cycle, increasing average delivered power.'},
+{q:'Which tool lets you view the PWM waveform over time?',o:['Oscilloscope','Compass','Thermometer','Continuity buzzer alone'],a:0,e:'An oscilloscope displays voltage versus time.'},
+{q:'Why should a motor use a driver rather than a GPIO pin directly?',o:['The motor needs no current','A GPIO pin is not designed for motor load current and inductive spikes','PWM cannot control motors','Drivers reduce all voltage to zero'],a:1,e:'A suitable driver handles higher current and provides appropriate switching/protection.'},
+{q:'Which statement is true?',o:['PWM output is always true analog voltage','Duty cycle and frequency mean the same thing','PWM is a digital pulse train whose average can be controlled','A resistor is never needed for an LED'],a:2,e:'PWM switches between digital levels; duty cycle controls the time-weighted average.'}
+];
+renderPractice(topicData,'topicQuestions','t');
+document.getElementById('topicQuiz').addEventListener('submit',e=>{e.preventDefault();grade(topicData,'t','topicScore')});
+document.getElementById('quizReset').addEventListener('click',()=>resetQuiz(topicData,'t','topicScore'));
+</script>
+</body>
+</html>
